@@ -1,4 +1,6 @@
-import { generateCameraSection, generateInfoPanel, generateFooter } from '../../templates.js';
+import sectionCamera from '../../templates/section-camera.html';
+import sectionInfoPanel from '../../templates/section-info-panel.html';
+import footer from '../../templates/footer.html';
 import {
 	getConfidenceTextClass,
 	getConfidenceCardClass,
@@ -21,11 +23,11 @@ export default class HomePage {
 
 	async render() {
 		return `
-      <main class="main-content">
-        ${generateCameraSection()}
-        ${generateInfoPanel()}
-      </main>
-      ${generateFooter()}
+		<main class="main-content">
+			${sectionCamera}
+			${sectionInfoPanel}
+		</main>
+		${footer}
     `;
 	}
 
@@ -85,13 +87,13 @@ export default class HomePage {
 		const statusDot = document.getElementById('status-dot');
 		const statusTextCamera = document.getElementById('status-text-camera');
 
-		console.log('🚀 ~ HomePage ~ enableToggleButton ~ toggleBtn:', toggleBtn);
+		// console.log('🚀 ~ HomePage ~ enableToggleButton ~ toggleBtn:', toggleBtn);
 		console.log('🚀 ~ HomePage ~ enableToggleButton ~ btnText:', btnText);
-		console.log('🚀 ~ HomePage ~ enableToggleButton ~ viewInactive:', viewInactive);
-		console.log('🚀 ~ HomePage ~ enableToggleButton ~ viewActive:', viewActive);
-		console.log('🚀 ~ HomePage ~ enableToggleButton ~ scannerOverlay:', scannerOverlay);
-		console.log('🚀 ~ HomePage ~ enableToggleButton ~ statusDot:', statusDot);
-		console.log('🚀 ~ HomePage ~ enableToggleButton ~ statusTextCamera:', statusTextCamera);
+		// console.log('🚀 ~ HomePage ~ enableToggleButton ~ viewInactive:', viewInactive);
+		// console.log('🚀 ~ HomePage ~ enableToggleButton ~ viewActive:', viewActive);
+		// console.log('🚀 ~ HomePage ~ enableToggleButton ~ scannerOverlay:', scannerOverlay);
+		// console.log('🚀 ~ HomePage ~ enableToggleButton ~ statusDot:', statusDot);
+		// console.log('🚀 ~ HomePage ~ enableToggleButton ~ statusTextCamera:', statusTextCamera);
 
 		if (toggleBtn) {
 			toggleBtn.disabled = false;

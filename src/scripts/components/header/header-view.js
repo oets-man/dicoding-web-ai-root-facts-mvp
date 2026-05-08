@@ -1,7 +1,7 @@
 export default class HeaderView {
 	async render() {
 		return `
-     <header class="header">
+			<header class="header">
 				<div class="header-content">
 					<div class="logo">
 						<i data-lucide="sprout" width="24" height="24"></i>
@@ -13,7 +13,7 @@ export default class HeaderView {
 					</div>
 				</div>
 			</header>
-    `;
+		`;
 	}
 
 	updateStatus(message) {

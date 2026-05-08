@@ -13,6 +13,12 @@ module.exports = {
 	module: {
 		rules: [
 			{
+				// Import template HTML sebagai string
+				test: /\.html$/i, // definisi berkas html
+				include: path.resolve(__dirname, 'src/scripts/templates'), // sesuaikan alamat
+				type: 'asset/source', // Import sebagai teks
+			},
+			{
 				test: /\.(png|jpe?g|gif)$/i,
 				type: 'asset/resource',
 			},
