@@ -48,6 +48,21 @@ module.exports = {
 			template: path.resolve(__dirname, 'src/index.html'),
 			scriptLoading: 'module',
 		}),
+		new CopyWebpackPlugin({
+			patterns: [
+				{
+					from: path.resolve(__dirname, 'src/public/manifest.json'),
+					to: path.resolve(__dirname, 'dist/manifest.json'),
+				},
+				{
+					from: path.resolve(__dirname, 'src/public/favicon.ico'),
+					to: path.resolve(__dirname, 'dist/'),
+				},
+				{ from: path.resolve(__dirname, 'src/model/'), to: 'model' },
+				{ from: path.resolve(__dirname, 'src/public/icons/'), to: 'icons' },
+				{ from: path.resolve(__dirname, 'src/public/screenshots/'), to: 'screenshots' },
+			],
+		}),
 	],
 	stats: {
 		warningsFilter: /import\.meta/,

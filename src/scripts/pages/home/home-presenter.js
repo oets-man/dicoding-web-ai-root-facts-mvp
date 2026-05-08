@@ -37,7 +37,7 @@ export default class HomePresenter {
 		try {
 			await this.#cameraService.loadCameras(this.#view.getCameraSelectElement());
 
-			// await this.#detectionService.loadModel();
+			await this.#detectionService.loadModel();
 			// await this.#nutritionService.loadModel();
 			this.#updateStatus('Model AI Siap');
 
