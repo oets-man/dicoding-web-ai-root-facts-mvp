@@ -35,12 +35,12 @@ export default class HomePresenter {
 		this.#updateStatus('Memuat model AI...');
 		this.#view.showCameraLoading();
 		try {
-			// await this.#cameraService.loadCameras(this.#view.getCameraSelectElement());
+			await this.#cameraService.loadCameras(this.#view.getCameraSelectElement());
+
 			// await this.#detectionService.loadModel();
-
 			// await this.#nutritionService.loadModel();
-
 			this.#updateStatus('Model AI Siap');
+
 			this.#view.hideCameraLoading();
 			this.#view.enableToggleButton();
 		} catch (error) {

@@ -24,6 +24,19 @@
   --radius-full: 9999px;
 
   --transition: all 0.2s ease;
+
+  --bg-app: #f8fafc;
+  --bg-surface-alt: #f1f5f9;
+  --border-color: #e2e8f0;
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --danger-border: #fecaca;
+  --warning: #f59e0b;
+  --warning-bg: #fffbeb;
+  --warning-border: #fde68a;
+  --warning-text: #92400e;
+  --viewport-bg: #0f172a;
+  --container-width: 1024px;
 }
 
 * {
@@ -629,4 +642,107 @@ input[type="range"]::-webkit-slider-thumb:hover {
     width: 64px;
     height: 64px;
   }
+}
+
+/* Camera */
+
+.viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  background-color: var(--viewport-bg);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid #1e293b;
+  content-visibility: contain;
+}
+
+.live-indicator {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background-color: var(--text-secondary);
+  transition: background-color 0.3s;
+}
+
+.dot.active {
+  background-color: var(--danger);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.live-text {
+  font-size: 0.75rem;
+  font-family: monospace;
+  color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(4px);
+  font-weight: 600;
+}
+
+.view-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-inactive {
+  background-color: rgba(241, 245, 249, 0.05);
+  color: var(--text-secondary);
+}
+
+.view-inactive svg {
+  opacity: 0.5;
+  margin-bottom: 1rem;
+}
+
+.view-active {
+  display: none;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+}
+
+.view-active video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scanner-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: none;
+}
+
+.scanner-line {
+  width: 100%;
+  height: 4px;
+  background-color: rgba(74, 222, 128, 0.8);
+  box-shadow: 0 0 15px rgba(74, 222, 128, 0.8);
+  animation: scan 3s ease-in-out infinite;
+}
+
+.scanner-border {
+  position: absolute;
+  inset: 1rem;
+  border: 2px dashed rgba(34, 197, 94, 0.3);
+  border-radius: var(--radius-md);
 }

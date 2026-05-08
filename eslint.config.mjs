@@ -16,6 +16,7 @@ export default defineConfig([
 			'no-unused-vars': 'warn',
 			'no-undef': 'warn',
 			'no-unused-private-class-members': 'warn',
+			'preserve-caught-error': 'warn',
 		},
 	},
 	{

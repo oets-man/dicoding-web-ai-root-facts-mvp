@@ -1,7 +1,17 @@
-import { APP_CONFIG, UI_CONFIG, CAMERA_CONFIG } from '../config.js';
+import { UI_CONFIG, CAMERA_CONFIG, TENSORFLOW_CONFIG } from '../config.js';
 
 export const isMobileDevice = () => {
 	return navigator.userAgentData?.mobile ?? /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+};
+
+export const getCameraConfig = () => {
+	const mobile = isMobileDevice();
+	return {
+		defaultFPS: CAMERA_CONFIG.defaultFPS,
+		fpsRange: CAMERA_CONFIG.fpsRange,
+		resolution: mobile ? CAMERA_CONFIG.mobileResolution : CAMERA_CONFIG.desktopResolution,
+		facingMode: mobile ? CAMERA_CONFIG.mobileFacingMode : CAMERA_CONFIG.desktopFacingMode,
+	};
 };
 
 export const createDelay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -20,8 +30,7 @@ export function showFormattedDate(date, locale = 'en-US', options = {}) {
 }
 
 export const isValidDetection = (result) => {
-	const { detectionConfidenceThreshold } = APP_CONFIG;
-	return result && result.isValid && result.confidence >= detectionConfidenceThreshold;
+	return result && result.isValid && result.confidence >= TENSORFLOW_CONFIG.confidenceThreshold;
 };
 
 export const validateModelMetadata = (metadata) => {
@@ -43,6 +52,19 @@ export const getConfidenceTextClass = (confidence) => {
 export const getConfidenceCardClass = (confidence) => {
 	const theme = getConfidenceTheme(confidence);
 	return `theme-${theme}`;
+};
+
+export const getCameraConstraints = (selectedCameraId) => {
+	const config = getCameraConfig();
+	return {
+		video: {
+			deviceId: selectedCameraId ? { exact: selectedCameraId } : undefined,
+			width: { ideal: config.resolution.width },
+			height: { ideal: config.resolution.height },
+			facingMode: config.facingMode,
+			frameRate: { ideal: config.defaultFPS },
+		},
+	};
 };
 
 export const getCameraErrorMessage = (error) => {
@@ -92,6 +114,14 @@ export const showElement = (element) => {
 
 export const setElementOpacity = (element, opacity) => {
 	if (element) element.style.opacity = opacity;
+};
+
+export const setElementDisplay = (element, value) => {
+	if (element) element.style.display = value;
+};
+
+export const setElementStyle = (element, property, value) => {
+	if (element) element.style[property] = value;
 };
 
 export const setElementText = (element, text) => {

@@ -2,16 +2,31 @@ export function generateCameraSection() {
 	return `
     <section class="camera-section">
       <div class="camera-container">
-        <div class="camera-wrapper">
+
+	  <div class="viewport">
+        <div class="live-indicator">
+          <span id="status-dot" class="dot"></span>
+          <span id="status-text-camera" class="live-text">OFFLINE</span>
+        </div>
+
+        <div id="view-inactive" class="view-content view-inactive">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+            <circle cx="12" cy="13" r="4"></circle>
+          </svg>
+          <p>Kamera sedang tidak aktif</p>
+        </div>
+
+        <div id="view-active" class="view-content view-active">
           <video id="media-video" autoplay muted playsinline></video>
-          <canvas id="media-canvas" class="hidden"></canvas>
-          <div id="camera-overlay" class="camera-overlay">
-            <div class="overlay-frame"></div>
+          <canvas id="media-canvas" width="640" height="480" style="display:none;"></canvas>
+
+          <div id="scanner-overlay" class="scanner-overlay">
+            <div class="scanner-line"></div>
+            <div class="scanner-border"></div>
           </div>
-          <div id="camera-placeholder" class="camera-placeholder">
-            <i data-lucide="camera" width="48" height="48"></i>
-            <p>Kamera tidak aktif</p>
-          </div>
+        </div>
+      </div>
         </div>
 
         <div class="camera-controls">
