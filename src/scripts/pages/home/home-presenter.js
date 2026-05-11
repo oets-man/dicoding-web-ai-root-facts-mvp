@@ -137,7 +137,7 @@ export default class HomePresenter {
 		if (this.#loopCount >= this.#maxLoop) {
 			this.#stopDetectionLoop();
 			this.stopCamera();
-			alert(
+			this.#view.showError(
 				`Gagal mendeteksi sayuran setelah ${this.#maxLoop} kali percobaan. Pastikan objek terlihat jelas di kamera.`,
 			);
 			return;

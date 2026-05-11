@@ -175,7 +175,7 @@ export default class HomePage {
 
 		showElement(stateIdle);
 		hideElement(stateAnalyzing);
-		showElement(stateResult);
+		hideElement(stateResult);
 	}
 
 	showAnalyzingState() {
@@ -183,9 +183,6 @@ export default class HomePage {
 		const stateAnalyzing = document.getElementById('state-loading');
 		const stateResult = document.getElementById('state-result');
 
-		// setElementDisplay(stateIdle, 'none');
-		// setElementDisplay(stateAnalyzing, 'flex');
-		// setElementDisplay(stateResult, 'none');
 		showElement(stateAnalyzing);
 		hideElement(stateIdle);
 		hideElement(stateResult);
@@ -241,13 +238,6 @@ export default class HomePage {
 	showNutritionLoading() {
 		const nutriFact = document.getElementById('fun-fact-text');
 		setElementText(nutriFact, 'Sedang menghasilkan informasi nutrisi...');
-
-		// const generateBtn = document.getElementById('generate-nutri-btn');
-
-		// if (generateBtn) {
-		// 	generateBtn.disabled = true;
-		// 	setElementText(generateBtn, 'Memproses...');
-		// }
 	}
 
 	showNutritionSuccess(fact) {
@@ -255,16 +245,9 @@ export default class HomePage {
 		addScaleAnimation(nutriFact, () => setElementText(nutriFact, fact));
 	}
 
-	showNutritionError() {
+	showNutritionError(err) {
 		const nutriFact = document.getElementById('fun-fact-text');
-		setElementText(nutriFact, 'Tidak dapat menghasilkan informasi nutrisi saat ini.');
-
-		// const generateBtn = document.getElementById('generate-nutri-btn');
-
-		// if (generateBtn) {
-		// 	generateBtn.disabled = false;
-		// 	setElementText(generateBtn, '🔄 Coba Lagi');
-		// }
+		setElementText(nutriFact, err || 'Tidak dapat menghasilkan informasi nutrisi saat ini.');
 	}
 
 	showError(message) {
