@@ -2,7 +2,7 @@ import { pipeline } from '@huggingface/transformers';
 import { APP_CONFIG, TRANSFORMERS_CONFIG } from '../config.js';
 import { createDelay, createModelProgressCallback, isWebGPUSupported, logError } from '../utils/index.js';
 
-class RootFactsService {
+class GeneratorService {
 	constructor(onProgress = null) {
 		this.generator = null;
 		this.isModelLoaded = false;
@@ -46,7 +46,7 @@ class RootFactsService {
 	// TODO [Advance] ✓ Konfigurasi tone fakta yang dihasilkan
 	setTone(tone) {
 		this.currentTone = tone;
-		// console.log('root facts service set tone', this);
+		// console.log('generator service set tone', this);
 		return this;
 	}
 
@@ -61,7 +61,7 @@ class RootFactsService {
 	// sesuai dengan contoh https://root-facts-advance.netlify.app/
 
 	async generateFacts(vegetable, tone = this.currentTone || 'normal') {
-		console.log('🚀 ~ RootFactsService ~ generateFacts ~ this:', this);
+		// console.log('🚀 ~ GeneratorService ~ generateFacts ~ this:', this);
 
 		if (!this.isModelLoaded || this.isGenerating) {
 			throw new Error('Model belum siap atau sedang menghasilkan konten');
@@ -77,8 +77,6 @@ class RootFactsService {
 			funny: `Write a fun and humorous nutrition fact about ${vegetable}. Make it lighthearted and entertaining while still including real nutritional benefits. Keep it to 1-2 sentences.`,
 			casual: `Write a casual, friendly nutrition fact about ${vegetable}. Use conversational language like you're telling a friend about it. Include key nutritional benefits in 1-2 sentences.`,
 		};
-		// console.log('🚀 ~ RootFactsService ~ generateFacts ~ tone:', tone);
-		// console.log('🚀 ~ RootFactsService ~ generateFacts ~ tonePrompts:', tonePrompts[tone]);
 
 		try {
 			this.isGenerating = true;
@@ -87,21 +85,28 @@ class RootFactsService {
 
 			const prompt = tonePrompts[tone] || tonePrompts.normal;
 
-			const result = await this.generator(prompt, {
+			const generate = await this.generator(prompt, {
 				max_new_tokens: this.config.maxTokens,
 				temperature: this.config.temperature,
 				do_sample: true,
 				top_p: this.config.topP,
 			});
+			// console.log('🚀 ~ GeneratorService ~ generateFacts ~ generate:', generate);
 
-			const generatedText = result[0].generated_text;
+			const generatedText = generate[0].generated_text;
 
-			return {
+			const result = {
 				nutritionFact: generatedText.trim(),
 				generated: true,
 				source: 'Dihasilkan AI',
 				tone: tone,
+				backend: this.currentBackend,
+				model: this.config.modelName,
+				timestamp: new Date().toISOString(),
 			};
+			console.log('🚀 ~ GeneratorService ~ generateFacts ~ result:', result);
+
+			return result;
 		} catch (error) {
 			logError('Kesalahan menghasilkan konten sayuran', error);
 			throw new Error(`Gagal menghasilkan informasi sayuran: ${error.message}`);
@@ -116,4 +121,4 @@ class RootFactsService {
 	}
 }
 
-export default RootFactsService;
+export default GeneratorService;

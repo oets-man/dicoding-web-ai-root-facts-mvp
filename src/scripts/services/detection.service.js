@@ -8,6 +8,7 @@ class DetectionService {
 		this.model = null;
 		this.labels = [];
 		this.config = TENSORFLOW_CONFIG;
+		this.backend = null;
 		this.performanceStats = {
 			operations: 0,
 			totalTime: 0,
@@ -15,12 +16,23 @@ class DetectionService {
 		};
 	}
 
+	async #setBackend(backend) {
+		if (tf.getBackend() !== backend) {
+			await tf.setBackend(backend);
+			await tf.ready();
+		}
+		this.backend = backend;
+	}
+
+	#getFallbackBackend() {
+		return this.backend === 'webgpu' ? 'webgl' : 'cpu';
+	}
+
 	async loadModel() {
 		try {
 			const backend = isWebGPUSupported() ? 'webgpu' : 'webgl';
 
-			await tf.setBackend(backend);
-			await tf.ready();
+			await this.#setBackend(backend);
 
 			const backendName = tf.getBackend();
 
@@ -59,7 +71,7 @@ class DetectionService {
 		}
 	}
 
-	async predict(imageElement) {
+	async predict(imageElement, fallbackTried = false) {
 		if (!this.model) {
 			throw new Error('Model belum dimuat. Panggil loadModel() terlebih dahulu.');
 		}
@@ -119,6 +131,13 @@ class DetectionService {
 			console.log('🚀 ~ DetectionService ~ predict ~ result:', result);
 			return result;
 		} catch (error) {
+			if (!fallbackTried && this.backend === 'webgpu') {
+				const fallbackBackend = this.#getFallbackBackend();
+				logError(`WebGPU gagal, fallback ke ${fallbackBackend}`, error);
+				await this.#setBackend(fallbackBackend);
+				return this.predict(imageElement, true);
+			}
+
 			logError('Kesalahan prediksi', error);
 			throw new Error(`Prediksi gagal: ${error.message}`);
 		} finally {

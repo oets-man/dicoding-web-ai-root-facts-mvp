@@ -1,7 +1,7 @@
 import { APP_CONFIG } from '../../config.js';
 import CameraService from '../../services/camera.service.js';
 import DetectionService from '../../services/detection.service.js';
-import RootFactService from '../../services/rootfacts.service.js';
+import GeneratorService from '../../services/generator.service.js';
 import { createDelay, isValidDetection } from '../../utils/index.js';
 
 export default class HomePresenter {
@@ -21,7 +21,7 @@ export default class HomePresenter {
 		this.#detectionService = new DetectionService();
 
 		// Callback untuk update progress download model
-		this.#generatorService = new RootFactService((progress) => {
+		this.#generatorService = new GeneratorService((progress) => {
 			this.#updateStatus(progress.message);
 		});
 	}
