@@ -153,9 +153,6 @@ export default class HomePage {
 		const stateAnalyzing = document.getElementById('state-loading');
 		const stateResult = document.getElementById('state-result');
 
-		// setElementDisplay(stateIdle, 'flex');
-		// setElementDisplay(stateAnalyzing, 'none');
-		// setElementDisplay(stateResult, 'none');
 		showElement(stateIdle);
 		hideElement(stateAnalyzing);
 		showElement(stateResult);
@@ -175,38 +172,19 @@ export default class HomePage {
 	}
 
 	showResultState(className, confidence) {
-		// console.log('🚀 ~ HomePage ~ showResultState ~ confidence:', confidence);
-		// console.log('🚀 ~ HomePage ~ showResultState ~ className:', className);
-
 		const stateIdle = document.getElementById('state-idle');
 		const stateAnalyzing = document.getElementById('state-loading');
 		const stateResult = document.getElementById('state-result');
 
-		// const resName = document.getElementById('res-name');
-		// const resConfidence = document.getElementById('res-confidence');
-		// const resBar = document.getElementById('res-bar');
-		// const resultCard = document.getElementById('result-card');
-
 		hideElement(stateIdle);
-		// setElementDisplay(stateAnalyzing, 'none');
 		hideElement(stateAnalyzing);
 		if (stateResult) {
 			showElement(stateResult);
 			addFadeInAnimation(stateResult);
 		}
 
-		// setElementText(resName, className);
-		// setElementText(resConfidence, `${confidence}%`);
-		// setElementStyle(resBar, 'width', `${confidence}%`);
-
-		// if (resultCard) {
-		// 	resultCard.classList.remove('theme-green', 'theme-yellow', 'theme-red');
-		// 	resultCard.classList.add(getConfidenceCardClass(confidence));
-		// }
-		// if (resConfidence) {
-		// 	resConfidence.classList.remove('text-green', 'text-yellow', 'text-red');
-		// 	resConfidence.classList.add(getConfidenceTextClass(confidence));
-		// }
+		const resName = document.getElementById('detected-name');
+		setElementText(resName, className);
 
 		const detectConfidence = document.getElementById('detected-confidence');
 		const confidentFill = document.getElementById('confidence-fill');
@@ -220,8 +198,7 @@ export default class HomePage {
 		const resConfidence = document.getElementById('res-confidence');
 		const resBar = document.getElementById('res-bar');
 		const resultCard = document.getElementById('result-card');
-		const nutriFact = document.getElementById('nutri-fact');
-		const nutriHeaderTitle = document.getElementById('nutri-header-title');
+		const nutriFact = document.getElementById('fun-fact-text');
 
 		setElementText(resName, className);
 		setElementText(resConfidence, `${confidence}%`);
@@ -239,15 +216,12 @@ export default class HomePage {
 		this.showResultState(className, confidence);
 
 		setElementText(nutriFact, 'Menghasilkan informasi nutrisi...');
-		setElementHTML(nutriHeaderTitle, '🤖 Menghasilkan Fakta Nutrisi...');
 	}
 
 	showNutritionLoading() {
-		const nutriFact = document.getElementById('nutri-fact');
-		const nutriHeaderTitle = document.getElementById('nutri-header-title');
+		const nutriFact = document.getElementById('fun-fact-text');
 		const generateBtn = document.getElementById('generate-nutri-btn');
 
-		setElementHTML(nutriHeaderTitle, '🤖 Menghasilkan...');
 		setElementText(nutriFact, 'Sedang menghasilkan informasi nutrisi...');
 		if (generateBtn) {
 			generateBtn.disabled = true;
@@ -256,20 +230,14 @@ export default class HomePage {
 	}
 
 	showNutritionSuccess(fact) {
-		// console.log('🚀 ~ HomePage ~ showNutritionSuccess ~ fact:', fact);
 		const nutriFact = document.getElementById('fun-fact-text');
-		const nutriHeaderTitle = document.getElementById('nutri-header-title');
-
-		setElementText(nutriHeaderTitle, 'Fakta Nutrisi');
 		addScaleAnimation(nutriFact, () => setElementText(nutriFact, fact));
 	}
 
 	showNutritionError() {
-		const nutriFact = document.getElementById('nutri-fact');
-		const nutriHeaderTitle = document.getElementById('nutri-header-title');
+		const nutriFact = document.getElementById('fun-fact-text');
 		const generateBtn = document.getElementById('generate-nutri-btn');
 
-		setElementText(nutriHeaderTitle, 'Fakta Nutrisi (Gagal)');
 		setElementText(nutriFact, 'Tidak dapat menghasilkan informasi nutrisi saat ini.');
 		if (generateBtn) {
 			generateBtn.disabled = false;

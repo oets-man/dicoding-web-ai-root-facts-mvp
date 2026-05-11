@@ -33,6 +33,8 @@ class DetectionService {
 				}),
 				tf.loadLayersModel(this.config.modelPath),
 			]);
+			// console.log('🚀 ~ DetectionService ~ loadModel ~ model:', model);
+			// console.log('🚀 ~ DetectionService ~ loadModel ~ metadata:', metadata);
 
 			if (!validateModelMetadata(metadata)) {
 				throw new Error('Metadata tidak valid: array label tidak ditemukan');
