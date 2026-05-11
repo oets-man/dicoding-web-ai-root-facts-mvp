@@ -14,6 +14,8 @@ export default class HomePresenter {
 	#currentLoopId = null;
 	#className = null;
 	#generationResult = null;
+	#maxLoop = 100;
+	#loopCount = 0;
 
 	constructor({ view, headerPresenter }) {
 		this.#view = view;
@@ -111,6 +113,7 @@ export default class HomePresenter {
 		const loopId = Date.now();
 
 		this.#currentLoopId = loopId;
+		this.#loopCount = 0; // Reset counter setiap start loop baru
 		this.#detectionLoop(loopId);
 		this.#timer = setInterval(() => {
 			this.#detectionLoop(loopId);
@@ -127,6 +130,16 @@ export default class HomePresenter {
 
 	async #detectionLoop(loopId) {
 		if (!this.#cameraService.isActive() || this.#currentLoopId !== loopId) {
+			return;
+		}
+
+		this.#loopCount++;
+		if (this.#loopCount >= this.#maxLoop) {
+			this.#stopDetectionLoop();
+			this.stopCamera();
+			alert(
+				`Gagal mendeteksi sayuran setelah ${this.#maxLoop} kali percobaan. Pastikan objek terlihat jelas di kamera.`,
+			);
 			return;
 		}
 
