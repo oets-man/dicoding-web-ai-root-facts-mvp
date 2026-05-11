@@ -13,8 +13,8 @@ class RootFactsService {
 		this.onProgress = onProgress; // Callback untuk update progress
 	}
 
-	// TODO [Basic] Muat model dan inisialisasi pipeline text2text-generation
-	// TODO [Advance] Implementasikan strategi Backend Adaptive
+	// TODO [Basic] ✓ Muat model dan inisialisasi pipeline text2text-generation
+	// TODO [Advance] ✓ Implementasikan strategi Backend Adaptive
 	async loadModel() {
 		try {
 			const device = isWebGPUSupported() ? 'webgpu' : 'wasm';
@@ -43,14 +43,26 @@ class RootFactsService {
 		}
 	}
 
-	// TODO [Advance] Konfigurasi tone fakta yang dihasilkan
-	setTone(tone) {}
+	// TODO [Advance] ✓ Konfigurasi tone fakta yang dihasilkan
+	setTone(tone) {
+		this.currentTone = tone;
+		// console.log('root facts service set tone', this);
+		return this;
+	}
 
-	// TODO [Basic] Lakukan prediksi pada elemen gambar yang diberikan dan kembalikan hasilnya
-	// TODO [Basic] Tambahkan validasi untuk maksimum panjang input dan pembersihan input terhadap karakter khusus untuk mengatasi prompt injection
-	// TODO [Skilled] Konfigurasikan parameter generasi berdasarkan kebutuhan
-	// TODO [Advance] Implemenasikan parameter tone untuk mengatur nada fakta yang dihasilkan
-	async generateFacts(vegetable, tone = 'normal') {
+	// TODO [Basic] ✓ Lakukan prediksi pada elemen gambar yang diberikan dan kembalikan hasilnya
+	// TODO [Basic] ✓ Tambahkan validasi untuk maksimum panjang input dan pembersihan input terhadap karakter khusus untuk mengatasi prompt injection
+	// TODO [Skilled] ✓ Konfigurasikan parameter generasi berdasarkan kebutuhan
+	// TODO [Advance] ✓ Implemenasikan parameter tone untuk mengatur nada fakta yang dihasilkan
+
+	// CATATAN:
+	// konfigurasi paramater generasi berdasarkan kebutuhan. atur di file config.js
+	// tone dibuat dinamis. bisa diatur dari UI.
+	// sesuai dengan contoh https://root-facts-advance.netlify.app/
+
+	async generateFacts(vegetable, tone = this.currentTone || 'normal') {
+		console.log('🚀 ~ RootFactsService ~ generateFacts ~ this:', this);
+
 		if (!this.isModelLoaded || this.isGenerating) {
 			throw new Error('Model belum siap atau sedang menghasilkan konten');
 		}
@@ -59,12 +71,21 @@ class RootFactsService {
 			throw new Error('Nama sayuran yang valid diperlukan');
 		}
 
+		const tonePrompts = {
+			normal: `Write a simple nutrition fact about ${vegetable}. Include key nutritional benefits in 1-2 sentences. Use a neutral, informative tone.`,
+			professional: `Write a professional nutrition brief about ${vegetable}. Include scientifically accurate health benefits and nutritional composition in a concise, formal manner. Keep it to 1-2 sentences.`,
+			funny: `Write a fun and humorous nutrition fact about ${vegetable}. Make it lighthearted and entertaining while still including real nutritional benefits. Keep it to 1-2 sentences.`,
+			casual: `Write a casual, friendly nutrition fact about ${vegetable}. Use conversational language like you're telling a friend about it. Include key nutritional benefits in 1-2 sentences.`,
+		};
+		// console.log('🚀 ~ RootFactsService ~ generateFacts ~ tone:', tone);
+		// console.log('🚀 ~ RootFactsService ~ generateFacts ~ tonePrompts:', tonePrompts[tone]);
+
 		try {
 			this.isGenerating = true;
 
 			await createDelay(APP_CONFIG.generationDelay);
 
-			const prompt = `Write a simple nutrition fact about ${vegetable}. Include key nutritional benefits in 1-2 sentences.`;
+			const prompt = tonePrompts[tone] || tonePrompts.normal;
 
 			const result = await this.generator(prompt, {
 				max_new_tokens: this.config.maxTokens,
@@ -79,10 +100,11 @@ class RootFactsService {
 				nutritionFact: generatedText.trim(),
 				generated: true,
 				source: 'Dihasilkan AI',
+				tone: tone,
 			};
 		} catch (error) {
-			logError('Kesalahan menghasilkan konten nutrisi', error);
-			throw new Error(`Gagal menghasilkan informasi nutrisi: ${error.message}`);
+			logError('Kesalahan menghasilkan konten sayuran', error);
+			throw new Error(`Gagal menghasilkan informasi sayuran: ${error.message}`);
 		} finally {
 			this.isGenerating = false;
 		}

@@ -28,18 +28,20 @@
 		</div>
 
 		<div class="fun-fact-card">
-			<div class="fun-fact-icon">
-				<i data-lucide="lightbulb" width="28" height="28"></i>
-			</div>
 			<div id="fun-fact-loading" class="fun-fact-loading hidden">
 				<div class="fun-fact-loading-spinner"></div>
 				<span>Memuat fakta menarik...</span>
 			</div>
 			<div id="fun-fact-content">
 				<p id="fun-fact-text" class="fun-fact-text">Fakta menarik akan muncul di sini...</p>
-				<button id="btn-copy" class="copy-btn" title="Salin fakta">
-					<i data-lucide="copy" width="18" height="18"></i>
-				</button>
+				<div class="fun-fact-actions">
+					<button class="btn-generate" id="btn-generate" title="Buat Fakta Baru">
+						<i data-lucide="rotate-ccw" width="18" height="18"></i>
+					</button>
+					<button id="btn-copy" class="copy-btn" title="Salin fakta">
+						<i data-lucide="copy" width="18" height="18"></i>
+					</button>
+				</div>
 			</div>
 		</div>
 

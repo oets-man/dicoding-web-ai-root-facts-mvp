@@ -41,19 +41,32 @@ export default class HomePage {
 
 	#bindEvents() {
 		const toggleBtn = document.getElementById('btn-toggle');
-		const fpsSlider = document.getElementById('fps-slider');
-
 		if (toggleBtn) {
 			toggleBtn.addEventListener('click', () => {
 				this.#presenter.toggleCamera();
 			});
 		}
 
+		const fpsSlider = document.getElementById('fps-slider');
 		if (fpsSlider) {
 			fpsSlider.addEventListener('input', (e) => {
 				const fpsValue = document.getElementById('fps-label');
 				if (fpsValue) fpsValue.textContent = e.target.value;
 				this.#presenter.setFPS(parseInt(e.target.value, 10));
+			});
+		}
+
+		const toneSelect = document.getElementById('tone-select');
+		if (toneSelect) {
+			toneSelect.addEventListener('change', (e) => {
+				this.#presenter.setTone(e.target.value);
+			});
+		}
+
+		const generateBtn = document.getElementById('btn-generate');
+		if (generateBtn) {
+			generateBtn.addEventListener('click', () => {
+				this.#presenter.generateNutrition();
 			});
 		}
 
@@ -258,5 +271,10 @@ export default class HomePage {
 	getFPSValue() {
 		const fpsSlider = document.getElementById('fps-slider');
 		return parseInt(fpsSlider?.value || '30', 10);
+	}
+
+	getToneValue() {
+		const toneSelect = document.getElementById('tone-select');
+		return toneSelect?.value || 'normal';
 	}
 }

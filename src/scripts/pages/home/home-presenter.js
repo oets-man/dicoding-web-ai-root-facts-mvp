@@ -12,6 +12,7 @@ export default class HomePresenter {
 	#generatorService;
 	#timer = null;
 	#currentLoopId = null;
+	#className = null;
 
 	constructor({ view, headerPresenter }) {
 		this.#view = view;
@@ -87,15 +88,8 @@ export default class HomePresenter {
 		}
 	}
 
-	async generateNutrition(className) {
-		this.#view.showNutritionLoading();
-		try {
-			const result = await this.#generatorService.generateFacts(className);
-			this.#view.showNutritionSuccess(result.nutritionFact);
-		} catch (error) {
-			console.error('generateFacts: error:', error);
-			this.#view.showNutritionError();
-		}
+	setTone(tone) {
+		this.#generatorService.setTone(tone);
 	}
 
 	#startDetectionLoop() {
@@ -136,6 +130,7 @@ export default class HomePresenter {
 
 				await createDelay(APP_CONFIG.analyzingDelay);
 
+				this.#className = result.className;
 				this.stopCamera();
 				this.#view.showResultState(result.className, result.confidence);
 
@@ -146,13 +141,7 @@ export default class HomePresenter {
 		}
 	}
 
-	async #generateNutritionAfterDetection(className, confidence) {
-		this.#view.showResultsWithNullNutrition(className, confidence);
-
-		this.#cameraService.stopCamera();
-		this.#view.showCameraInactive();
-		this.#view.enableToggleButton();
-
+	async generateNutrition(className = this.#className) {
 		if (this.#generatorService.isReady()) {
 			await createDelay(APP_CONFIG.analyzingDelay);
 			this.#view.showNutritionLoading();
@@ -168,5 +157,15 @@ export default class HomePresenter {
 		} else {
 			this.#view.showNutritionError();
 		}
+	}
+
+	async #generateNutritionAfterDetection(className, confidence) {
+		this.#view.showResultsWithNullNutrition(className, confidence);
+
+		this.#cameraService.stopCamera();
+		this.#view.showCameraInactive();
+		this.#view.enableToggleButton();
+
+		await this.generateNutrition(className);
 	}
 }
