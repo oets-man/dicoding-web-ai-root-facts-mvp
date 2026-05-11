@@ -13,6 +13,7 @@ export default class HomePresenter {
 	#timer = null;
 	#currentLoopId = null;
 	#className = null;
+	#generationResult = null;
 
 	constructor({ view, headerPresenter }) {
 		this.#view = view;
@@ -49,6 +50,17 @@ export default class HomePresenter {
 			this.#updateStatus('Model gagal dimuat');
 			this.#view.hideCameraLoading();
 			this.#view.showError(error.message);
+		}
+	}
+
+	async copyToClipboard() {
+		try {
+			const text = this.#generationResult || 'Tidak ada informasi untuk disalin.';
+			await navigator.clipboard.writeText(text);
+			this.#view.showCopyFeedback('Informasi berhasil disalin ke clipboard!');
+		} catch (error) {
+			this.#view.showCopyFeedback('Gagal menyalin informasi.', 'error');
+			console.error('copyToClipboard: error:', error);
 		}
 	}
 
@@ -150,6 +162,7 @@ export default class HomePresenter {
 				const result = await this.#generatorService.generateFacts(className);
 				// console.log('🚀 ~ HomePresenter ~ result:', result);
 				this.#view.showNutritionSuccess(result.nutritionFact);
+				this.#generationResult = result.nutritionFact;
 			} catch (error) {
 				console.error('generateFacts: error:', error);
 				this.#view.showNutritionError();

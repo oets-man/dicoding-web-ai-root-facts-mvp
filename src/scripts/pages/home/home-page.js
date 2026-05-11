@@ -70,6 +70,13 @@ export default class HomePage {
 			});
 		}
 
+		const copyBtn = document.getElementById('btn-copy');
+		if (copyBtn) {
+			copyBtn.addEventListener('click', () => {
+				this.#presenter.copyToClipboard();
+			});
+		}
+
 		window.addEventListener('beforeunload', () => {
 			this.#presenter.stopCamera();
 		});
@@ -276,5 +283,9 @@ export default class HomePage {
 	getToneValue() {
 		const toneSelect = document.getElementById('tone-select');
 		return toneSelect?.value || 'normal';
+	}
+
+	showCopyFeedback(message, type = 'success') {
+		window.alert(`${type.toUpperCase()}: ${message}`);
 	}
 }
