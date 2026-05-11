@@ -220,13 +220,14 @@ export default class HomePage {
 
 	showNutritionLoading() {
 		const nutriFact = document.getElementById('fun-fact-text');
-		const generateBtn = document.getElementById('generate-nutri-btn');
-
 		setElementText(nutriFact, 'Sedang menghasilkan informasi nutrisi...');
-		if (generateBtn) {
-			generateBtn.disabled = true;
-			setElementText(generateBtn, 'Memproses...');
-		}
+
+		// const generateBtn = document.getElementById('generate-nutri-btn');
+
+		// if (generateBtn) {
+		// 	generateBtn.disabled = true;
+		// 	setElementText(generateBtn, 'Memproses...');
+		// }
 	}
 
 	showNutritionSuccess(fact) {
@@ -236,13 +237,14 @@ export default class HomePage {
 
 	showNutritionError() {
 		const nutriFact = document.getElementById('fun-fact-text');
-		const generateBtn = document.getElementById('generate-nutri-btn');
-
 		setElementText(nutriFact, 'Tidak dapat menghasilkan informasi nutrisi saat ini.');
-		if (generateBtn) {
-			generateBtn.disabled = false;
-			setElementText(generateBtn, '🔄 Coba Lagi');
-		}
+
+		// const generateBtn = document.getElementById('generate-nutri-btn');
+
+		// if (generateBtn) {
+		// 	generateBtn.disabled = false;
+		// 	setElementText(generateBtn, '🔄 Coba Lagi');
+		// }
 	}
 
 	showError(message) {
