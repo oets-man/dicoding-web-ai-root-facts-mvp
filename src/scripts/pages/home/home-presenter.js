@@ -1,7 +1,7 @@
 import { APP_CONFIG } from '../../config.js';
 import CameraService from '../../services/camera.service.js';
 import DetectionService from '../../services/detection.service.js';
-import NutritionService from '../../services/nutrition.service.js';
+import RootFactService from '../../services/rootfacts.service.js';
 import { createDelay, isValidDetection } from '../../utils/index.js';
 
 export default class HomePresenter {
@@ -9,7 +9,7 @@ export default class HomePresenter {
 	#headerPresenter;
 	#cameraService;
 	#detectionService;
-	#nutritionService;
+	#generatorService;
 	#timer = null;
 	#currentLoopId = null;
 
@@ -20,7 +20,7 @@ export default class HomePresenter {
 		this.#detectionService = new DetectionService();
 
 		// Callback untuk update progress download model
-		this.#nutritionService = new NutritionService((progress) => {
+		this.#generatorService = new RootFactService((progress) => {
 			this.#updateStatus(progress.message);
 		});
 	}
@@ -38,7 +38,7 @@ export default class HomePresenter {
 			await this.#cameraService.loadCameras(this.#view.getCameraSelectElement());
 
 			await this.#detectionService.loadModel();
-			// await this.#nutritionService.loadModel();
+			await this.#generatorService.loadModel();
 			this.#updateStatus('Model AI Siap');
 
 			this.#view.hideCameraLoading();
@@ -90,10 +90,10 @@ export default class HomePresenter {
 	async generateNutrition(className) {
 		this.#view.showNutritionLoading();
 		try {
-			const result = await this.#nutritionService.generateNutrition(className);
+			const result = await this.#generatorService.generateFacts(className);
 			this.#view.showNutritionSuccess(result.nutritionFact);
 		} catch (error) {
-			console.error('generateNutrition: error:', error);
+			console.error('generateFacts: error:', error);
 			this.#view.showNutritionError();
 		}
 	}
@@ -153,15 +153,16 @@ export default class HomePresenter {
 		this.#view.showCameraInactive();
 		this.#view.enableToggleButton();
 
-		if (this.#nutritionService.isReady()) {
+		if (this.#generatorService.isReady()) {
 			await createDelay(APP_CONFIG.analyzingDelay);
 			this.#view.showNutritionLoading();
 
 			try {
-				const result = await this.#nutritionService.generateNutrition(className);
+				const result = await this.#generatorService.generateFacts(className);
+				// console.log('🚀 ~ HomePresenter ~ result:', result);
 				this.#view.showNutritionSuccess(result.nutritionFact);
 			} catch (error) {
-				console.error('generateNutrition: error:', error);
+				console.error('generateFacts: error:', error);
 				this.#view.showNutritionError();
 			}
 		} else {

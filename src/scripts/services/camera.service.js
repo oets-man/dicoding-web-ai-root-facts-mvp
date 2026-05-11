@@ -45,6 +45,8 @@ class CameraService {
 	}
 
 	async startCamera(videoId, canvasId, cameraSelect) {
+		console.log('🚀 ~ CameraService ~ this.config:', this.config);
+
 		try {
 			this.initializeElements(videoId, canvasId);
 			this.stopCamera();

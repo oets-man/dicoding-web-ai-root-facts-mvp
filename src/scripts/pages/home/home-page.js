@@ -10,6 +10,8 @@ import {
 	setElementStyle,
 	addScaleAnimation,
 	addFadeInAnimation,
+	showElement,
+	hideElement,
 } from '../../utils/index.js';
 import HomePresenter from './home-presenter.js';
 
@@ -49,7 +51,7 @@ export default class HomePage {
 
 		if (fpsSlider) {
 			fpsSlider.addEventListener('input', (e) => {
-				const fpsValue = document.getElementById('fps-value');
+				const fpsValue = document.getElementById('fps-label');
 				if (fpsValue) fpsValue.textContent = e.target.value;
 				this.#presenter.setFPS(parseInt(e.target.value, 10));
 			});
@@ -86,14 +88,6 @@ export default class HomePage {
 		const scannerOverlay = document.getElementById('scanner-overlay');
 		const statusDot = document.getElementById('status-dot');
 		const statusTextCamera = document.getElementById('status-text-camera');
-
-		// console.log('🚀 ~ HomePage ~ enableToggleButton ~ toggleBtn:', toggleBtn);
-		console.log('🚀 ~ HomePage ~ enableToggleButton ~ btnText:', btnText);
-		// console.log('🚀 ~ HomePage ~ enableToggleButton ~ viewInactive:', viewInactive);
-		// console.log('🚀 ~ HomePage ~ enableToggleButton ~ viewActive:', viewActive);
-		// console.log('🚀 ~ HomePage ~ enableToggleButton ~ scannerOverlay:', scannerOverlay);
-		// console.log('🚀 ~ HomePage ~ enableToggleButton ~ statusDot:', statusDot);
-		// console.log('🚀 ~ HomePage ~ enableToggleButton ~ statusTextCamera:', statusTextCamera);
 
 		if (toggleBtn) {
 			toggleBtn.disabled = false;
@@ -156,52 +150,69 @@ export default class HomePage {
 
 	showIdleState() {
 		const stateIdle = document.getElementById('state-idle');
-		const stateAnalyzing = document.getElementById('state-analyzing');
+		const stateAnalyzing = document.getElementById('state-loading');
 		const stateResult = document.getElementById('state-result');
 
-		setElementDisplay(stateIdle, 'flex');
-		setElementDisplay(stateAnalyzing, 'none');
-		setElementDisplay(stateResult, 'none');
+		// setElementDisplay(stateIdle, 'flex');
+		// setElementDisplay(stateAnalyzing, 'none');
+		// setElementDisplay(stateResult, 'none');
+		showElement(stateIdle);
+		hideElement(stateAnalyzing);
+		showElement(stateResult);
 	}
 
 	showAnalyzingState() {
 		const stateIdle = document.getElementById('state-idle');
-		const stateAnalyzing = document.getElementById('state-analyzing');
+		const stateAnalyzing = document.getElementById('state-loading');
 		const stateResult = document.getElementById('state-result');
 
-		setElementDisplay(stateIdle, 'none');
-		setElementDisplay(stateAnalyzing, 'flex');
-		setElementDisplay(stateResult, 'none');
+		// setElementDisplay(stateIdle, 'none');
+		// setElementDisplay(stateAnalyzing, 'flex');
+		// setElementDisplay(stateResult, 'none');
+		showElement(stateAnalyzing);
+		hideElement(stateIdle);
+		hideElement(stateResult);
 	}
 
 	showResultState(className, confidence) {
-		const stateIdle = document.getElementById('state-idle');
-		const stateAnalyzing = document.getElementById('state-analyzing');
-		const stateResult = document.getElementById('state-result');
-		const resName = document.getElementById('res-name');
-		const resConfidence = document.getElementById('res-confidence');
-		const resBar = document.getElementById('res-bar');
-		const resultCard = document.getElementById('result-card');
+		// console.log('🚀 ~ HomePage ~ showResultState ~ confidence:', confidence);
+		// console.log('🚀 ~ HomePage ~ showResultState ~ className:', className);
 
-		setElementDisplay(stateIdle, 'none');
-		setElementDisplay(stateAnalyzing, 'none');
+		const stateIdle = document.getElementById('state-idle');
+		const stateAnalyzing = document.getElementById('state-loading');
+		const stateResult = document.getElementById('state-result');
+
+		// const resName = document.getElementById('res-name');
+		// const resConfidence = document.getElementById('res-confidence');
+		// const resBar = document.getElementById('res-bar');
+		// const resultCard = document.getElementById('result-card');
+
+		hideElement(stateIdle);
+		// setElementDisplay(stateAnalyzing, 'none');
+		hideElement(stateAnalyzing);
 		if (stateResult) {
-			setElementDisplay(stateResult, 'flex');
+			showElement(stateResult);
 			addFadeInAnimation(stateResult);
 		}
 
-		setElementText(resName, className);
-		setElementText(resConfidence, `${confidence}%`);
-		setElementStyle(resBar, 'width', `${confidence}%`);
+		// setElementText(resName, className);
+		// setElementText(resConfidence, `${confidence}%`);
+		// setElementStyle(resBar, 'width', `${confidence}%`);
 
-		if (resultCard) {
-			resultCard.classList.remove('theme-green', 'theme-yellow', 'theme-red');
-			resultCard.classList.add(getConfidenceCardClass(confidence));
-		}
-		if (resConfidence) {
-			resConfidence.classList.remove('text-green', 'text-yellow', 'text-red');
-			resConfidence.classList.add(getConfidenceTextClass(confidence));
-		}
+		// if (resultCard) {
+		// 	resultCard.classList.remove('theme-green', 'theme-yellow', 'theme-red');
+		// 	resultCard.classList.add(getConfidenceCardClass(confidence));
+		// }
+		// if (resConfidence) {
+		// 	resConfidence.classList.remove('text-green', 'text-yellow', 'text-red');
+		// 	resConfidence.classList.add(getConfidenceTextClass(confidence));
+		// }
+
+		const detectConfidence = document.getElementById('detected-confidence');
+		const confidentFill = document.getElementById('confidence-fill');
+
+		setElementText(detectConfidence, `${confidence}%`);
+		setElementStyle(confidentFill, 'width', `${confidence}%`);
 	}
 
 	showResultsWithNullNutrition(className, confidence) {
@@ -245,7 +256,8 @@ export default class HomePage {
 	}
 
 	showNutritionSuccess(fact) {
-		const nutriFact = document.getElementById('nutri-fact');
+		// console.log('🚀 ~ HomePage ~ showNutritionSuccess ~ fact:', fact);
+		const nutriFact = document.getElementById('fun-fact-text');
 		const nutriHeaderTitle = document.getElementById('nutri-header-title');
 
 		setElementText(nutriHeaderTitle, 'Fakta Nutrisi');
