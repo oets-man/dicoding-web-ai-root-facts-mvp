@@ -67,7 +67,7 @@ class DetectionService {
 			return result;
 		} catch (error) {
 			logError('Gagal memuat model', error);
-			throw new Error(`Gagal memuat model: ${error.message}`);
+			throw new Error(`Gagal memuat model: ${error.message}`, { cause: error });
 		}
 	}
 
@@ -139,7 +139,7 @@ class DetectionService {
 			}
 
 			logError('Kesalahan prediksi', error);
-			throw new Error(`Prediksi gagal: ${error.message}`);
+			throw new Error(`Prediksi gagal: ${error.message}`, { cause: error });
 		} finally {
 			if (tensor) tensor.dispose();
 			if (predictions) predictions.dispose();

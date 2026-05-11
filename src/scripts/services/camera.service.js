@@ -40,7 +40,7 @@ class CameraService {
 			return cameras;
 		} catch (error) {
 			logError('Gagal memuat kamera', error);
-			throw new Error(`Akses kamera gagal: ${error.message}`);
+			throw new Error(`Akses kamera gagal: ${error.message}`, { cause: error });
 		}
 	}
 
@@ -65,7 +65,7 @@ class CameraService {
 		} catch (error) {
 			logError('Gagal memulai kamera', error);
 			const errorMessage = getCameraErrorMessage(error);
-			throw new Error(errorMessage);
+			throw new Error(errorMessage, { cause: error });
 		}
 	}
 

@@ -39,7 +39,7 @@ class GeneratorService {
 			logError('Kesalahan memuat model Transformers.js', error);
 
 			this.isModelLoaded = false;
-			throw new Error(`Gagal memuat model: ${error.message}`);
+			throw new Error(`Gagal memuat model: ${error.message}`, { cause: error });
 		}
 	}
 
@@ -109,7 +109,7 @@ class GeneratorService {
 			return result;
 		} catch (error) {
 			logError('Kesalahan menghasilkan konten sayuran', error);
-			throw new Error(`Gagal menghasilkan informasi sayuran: ${error.message}`);
+			throw new Error(`Gagal menghasilkan informasi sayuran: ${error.message}`, { cause: error });
 		} finally {
 			this.isGenerating = false;
 		}
