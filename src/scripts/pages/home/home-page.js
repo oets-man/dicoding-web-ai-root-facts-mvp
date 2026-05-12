@@ -66,7 +66,7 @@ export default class HomePage {
 		const generateBtn = document.getElementById('btn-generate');
 		if (generateBtn) {
 			generateBtn.addEventListener('click', () => {
-				this.#presenter.generateNutrition();
+				this.#presenter.regenerateNutrition();
 			});
 		}
 
@@ -83,26 +83,17 @@ export default class HomePage {
 	}
 
 	showCameraLoading() {
-		const toggleBtn = document.getElementById('btn-toggle');
-		const btnText = document.getElementById('btn-text');
-		if (toggleBtn) {
-			toggleBtn.disabled = true;
-		}
-		setElementText(btnText, 'Memuat...');
+		const captureBtn = document.getElementById('btn-toggle');
+		captureBtn.classList.add('scanning');
 	}
 
 	hideCameraLoading() {
-		const toggleBtn = document.getElementById('btn-toggle');
-		const btnText = document.getElementById('btn-text');
-		if (toggleBtn && toggleBtn.disabled) {
-			toggleBtn.disabled = false;
-		}
-		setElementText(btnText, 'Mulai Scan');
+		const captureBtn = document.getElementById('btn-toggle');
+		captureBtn.classList.remove('scanning');
 	}
 
 	enableToggleButton() {
 		const toggleBtn = document.getElementById('btn-toggle');
-		const btnText = document.getElementById('btn-text');
 		const viewInactive = document.getElementById('view-inactive');
 		const viewActive = document.getElementById('view-active');
 		const scannerOverlay = document.getElementById('scanner-overlay');
@@ -114,7 +105,6 @@ export default class HomePage {
 			toggleBtn.classList.remove('btn-stop');
 			toggleBtn.classList.add('btn-start');
 		}
-		setElementText(btnText, 'Mulai Scan');
 		setElementDisplay(viewInactive, 'flex');
 		setElementDisplay(viewActive, 'none');
 		setElementDisplay(scannerOverlay, 'none');
@@ -128,7 +118,6 @@ export default class HomePage {
 
 	showCameraActive() {
 		const toggleBtn = document.getElementById('btn-toggle');
-		const btnText = document.getElementById('btn-text');
 		const viewInactive = document.getElementById('view-inactive');
 		const viewActive = document.getElementById('view-active');
 		const scannerOverlay = document.getElementById('scanner-overlay');
@@ -139,7 +128,6 @@ export default class HomePage {
 			toggleBtn.classList.remove('btn-start');
 			toggleBtn.classList.add('btn-stop');
 		}
-		setElementText(btnText, 'Berhenti');
 		setElementDisplay(viewInactive, 'none');
 		setElementDisplay(viewActive, 'block');
 		setElementDisplay(scannerOverlay, 'block');
@@ -149,7 +137,6 @@ export default class HomePage {
 
 	showCameraInactive() {
 		const toggleBtn = document.getElementById('btn-toggle');
-		const btnText = document.getElementById('btn-text');
 		const viewInactive = document.getElementById('view-inactive');
 		const viewActive = document.getElementById('view-active');
 		const scannerOverlay = document.getElementById('scanner-overlay');
@@ -160,7 +147,6 @@ export default class HomePage {
 			toggleBtn.classList.remove('btn-stop');
 			toggleBtn.classList.add('btn-start');
 		}
-		setElementText(btnText, 'Mulai Scan');
 		setElementDisplay(viewInactive, 'flex');
 		setElementDisplay(viewActive, 'none');
 		setElementDisplay(scannerOverlay, 'none');
@@ -279,7 +265,19 @@ export default class HomePage {
 		return toneSelect?.value || 'normal';
 	}
 
-	showCopyFeedback(message, type = 'success') {
-		window.alert(`${type.toUpperCase()}: ${message}`);
+	showCopyFeedback() {
+		const btnCopy = document.getElementById('btn-copy');
+		btnCopy.classList.add('copied');
+		setTimeout(() => {
+			btnCopy.classList.remove('copied');
+		}, 1500);
+	}
+
+	showRegenerateFeedback() {
+		const btnGenerate = document.getElementById('btn-generate');
+		btnGenerate.classList.add('regenerated');
+		setTimeout(() => {
+			btnGenerate.classList.remove('regenerated');
+		}, 1000);
 	}
 }

@@ -37,21 +37,21 @@ export default class HomePresenter {
 
 	async initialApp() {
 		this.#updateStatus('Memuat model AI...');
-		this.#view.showCameraLoading();
 		try {
+			this.#view.showCameraLoading();
 			await this.#cameraService.loadCameras(this.#view.getCameraSelectElement());
 
 			await this.#detectionService.loadModel();
 			await this.#generatorService.loadModel();
 			this.#updateStatus('Model AI Siap');
 
-			this.#view.hideCameraLoading();
 			this.#view.enableToggleButton();
 		} catch (error) {
 			console.error('initialApp: error:', error);
 			this.#updateStatus('Model gagal dimuat');
-			this.#view.hideCameraLoading();
 			this.#view.showError(error.message);
+		} finally {
+			this.#view.hideCameraLoading();
 		}
 	}
 
@@ -59,7 +59,7 @@ export default class HomePresenter {
 		try {
 			const text = this.#generationResult || 'Tidak ada informasi untuk disalin.';
 			await navigator.clipboard.writeText(text);
-			this.#view.showCopyFeedback('Informasi berhasil disalin ke clipboard!');
+			this.#view.showCopyFeedback();
 		} catch (error) {
 			this.#view.showCopyFeedback('Gagal menyalin informasi.', 'error');
 			console.error('copyToClipboard: error:', error);
@@ -67,16 +67,17 @@ export default class HomePresenter {
 	}
 
 	async startCamera() {
-		this.#view.showCameraLoading();
 		try {
+			this.#view.showCameraLoading();
 			await this.#cameraService.startCamera('media-video', 'media-canvas', this.#view.getCameraSelectElement());
 			this.#view.showCameraActive();
 			this.#view.showAnalyzingState();
 			this.#startDetectionLoop();
 		} catch (error) {
 			console.error('startCamera: error:', error);
-			this.#view.hideCameraLoading();
 			this.#view.showError(error.message);
+		} finally {
+			this.#view.hideCameraLoading();
 		}
 	}
 
@@ -166,10 +167,15 @@ export default class HomePresenter {
 		}
 	}
 
+	async regenerateNutrition() {
+		this.#view.showRegenerateFeedback();
+		await this.generateNutrition();
+	}
+
 	async generateNutrition(className = this.#className) {
 		if (this.#generatorService.isReady()) {
-			await createDelay(APP_CONFIG.analyzingDelay);
 			this.#view.showNutritionLoading();
+			await createDelay(APP_CONFIG.analyzingDelay);
 
 			try {
 				const result = await this.#generatorService.generateFacts(className);
