@@ -5,7 +5,6 @@ import {
 	getConfidenceTextClass,
 	getConfidenceCardClass,
 	setElementText,
-	setElementHTML,
 	setElementDisplay,
 	setElementStyle,
 	addScaleAnimation,
