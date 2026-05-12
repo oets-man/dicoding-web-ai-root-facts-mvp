@@ -128,6 +128,9 @@ class GeneratorService {
 	isReady() {
 		return this.isModelLoaded && !this.isGenerating;
 	}
+	isGeneratingContent() {
+		return this.isGenerating;
+	}
 }
 
 export default GeneratorService;

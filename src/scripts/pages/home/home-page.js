@@ -241,9 +241,9 @@ export default class HomePage {
 
 	showNutritionError(err) {
 		const nutriFact = document.getElementById('fun-fact-text');
-		const funFactSpinner = document.getElementById('fun-fact-spinner');
 		setElementText(nutriFact, err || 'Tidak dapat menghasilkan informasi nutrisi saat ini.');
-		hideElement(funFactSpinner);
+		// const funFactSpinner = document.getElementById('fun-fact-spinner');
+		// hideElement(funFactSpinner);
 	}
 
 	showError(message) {

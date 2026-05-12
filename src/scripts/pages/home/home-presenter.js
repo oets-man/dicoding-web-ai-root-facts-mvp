@@ -184,12 +184,19 @@ export default class HomePresenter {
 				this.#view.showNutritionSuccess(result.nutritionFact);
 				this.#generationResult = result.nutritionFact;
 			} catch (error) {
-				console.error('generateFacts: error:', error);
-				this.#view.showNutritionError();
+				console.error('generateFacts: ', error);
+				this.#view.showNutritionError(error.message);
 			}
 		} else {
-			this.#view.showNutritionError();
+			this.#view.showNutritionError('Model belum siap. Silakan coba lagi nanti atau refresh halaman.');
 		}
+
+		setTimeout(() => {
+			// paksa tampilkan loading jika masih dalam proses generating
+			if (this.#generatorService.isGeneratingContent()) {
+				this.#view.showNutritionLoading(this.#generatorService.getTone());
+			}
+		}, 1000);
 	}
 
 	async #generateNutritionAfterDetection(className, confidence) {
