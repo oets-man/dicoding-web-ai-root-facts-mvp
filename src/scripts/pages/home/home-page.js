@@ -208,6 +208,9 @@ export default class HomePage {
 
 		setElementText(detectConfidence, `${confidence}%`);
 		setElementStyle(confidentFill, 'width', `${confidence}%`);
+
+		const funFactSpinner = document.getElementById('fun-fact-spinner');
+		hideElement(funFactSpinner);
 	}
 
 	showResultsWithNullNutrition(className, confidence) {
@@ -216,6 +219,7 @@ export default class HomePage {
 		const resBar = document.getElementById('res-bar');
 		const resultCard = document.getElementById('result-card');
 		const nutriFact = document.getElementById('fun-fact-text');
+		const funFactSpinner = document.getElementById('fun-fact-spinner');
 
 		setElementText(resName, className);
 		setElementText(resConfidence, `${confidence}%`);
@@ -233,21 +237,28 @@ export default class HomePage {
 		this.showResultState(className, confidence);
 
 		setElementText(nutriFact, 'Menghasilkan informasi nutrisi...');
+		showElement(funFactSpinner);
 	}
 
 	showNutritionLoading() {
 		const nutriFact = document.getElementById('fun-fact-text');
+		const funFactSpinner = document.getElementById('fun-fact-spinner');
 		setElementText(nutriFact, 'Sedang menghasilkan informasi nutrisi...');
+		showElement(funFactSpinner);
 	}
 
 	showNutritionSuccess(fact) {
 		const nutriFact = document.getElementById('fun-fact-text');
+		const funFactSpinner = document.getElementById('fun-fact-spinner');
 		addScaleAnimation(nutriFact, () => setElementText(nutriFact, fact));
+		hideElement(funFactSpinner);
 	}
 
 	showNutritionError(err) {
 		const nutriFact = document.getElementById('fun-fact-text');
+		const funFactSpinner = document.getElementById('fun-fact-spinner');
 		setElementText(nutriFact, err || 'Tidak dapat menghasilkan informasi nutrisi saat ini.');
+		hideElement(funFactSpinner);
 	}
 
 	showError(message) {
