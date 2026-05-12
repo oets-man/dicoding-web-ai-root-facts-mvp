@@ -1,6 +1,6 @@
 {
-	"name": "NutriVision - AI Food Recognition",
-	"short_name": "NutriVision",
+	"name": "RootFacts - AI Food Recognition",
+	"short_name": "RootFacts",
 	"description": "Aplikasi AI untuk mengenali makanan dan memberikan informasi nutrisi sayuran",
 	"start_url": "/",
 	"display": "standalone",
@@ -9,16 +9,16 @@
 	"orientation": "portrait-primary",
 	"icons": [
 		{
-			"src": "/icons/android-chrome-192x192.png",
+			"src": "/icons/icon-192x192.png",
 			"sizes": "192x192",
 			"type": "image/png",
-			"purpose": "any maskable"
+			"purpose": "any"
 		},
 		{
-			"src": "/icons/android-chrome-512x512.png",
+			"src": "/icons/icon-512x512.png",
 			"sizes": "512x512",
 			"type": "image/png",
-			"purpose": "any maskable"
+			"purpose": "any"
 		}
 	],
 	"screenshots": [
@@ -31,7 +31,7 @@
 		},
 		{
 			"src": "/screenshots/screenshot-n.png",
-			"sizes": "1100x520",
+			"sizes": "520x1100",
 			"type": "image/png",
 			"form_factor": "narrow",
 			"label": "Detection result with nutrition info"
