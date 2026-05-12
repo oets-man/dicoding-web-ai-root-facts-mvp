@@ -20,25 +20,33 @@ module.exports = merge(common, {
 		new MiniCssExtractPlugin({
 			filename: '[name].[contenthash].css',
 		}),
-		// new WorkboxWebpackPlugin.GenerateSW({
-		// 	swDest: 'sw.js',
-		// 	maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
-		// 	runtimeCaching: [
-		// 		{
-		// 			urlPattern: /^https:\/\/api\./i,
-		// 			handler: 'NetworkFirst',
-		// 			options: {
-		// 				cacheName: 'api-cache',
-		// 				expiration: {
-		// 					maxEntries: 50,
-		// 					maxAgeSeconds: 60 * 60 * 24,
-		// 				},
-		// 				cacheableResponse: {
-		// 					statuses: [0, 200],
-		// 				},
-		// 			},
-		// 		},
-		// 	],
-		// }),
+
+		new WorkboxWebpackPlugin.GenerateSW({
+			swDest: 'sw.bundle.js',
+			maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50 MB
+			runtimeCaching: [
+				{
+					urlPattern: ({ url }) => url.origin === self.location.origin,
+					handler: 'NetworkFirst',
+					options: { cacheName: 'local-api' },
+				},
+				{
+					urlPattern: ({ url }) => url.pathname.startsWith('/model/'),
+					handler: 'CacheFirst',
+					options: { cacheName: 'model-cache' },
+				},
+				{
+					urlPattern: ({ request }) => request.destination === 'image',
+					handler: 'CacheFirst',
+					options: { cacheName: 'images-cache' },
+				},
+				{
+					urlPattern: ({ request }) =>
+						request.destination === 'script' || request.destination === 'style',
+					handler: 'StaleWhileRevalidate',
+					options: { cacheName: 'static-resources' },
+				},
+			],
+		}),
 	],
 });
