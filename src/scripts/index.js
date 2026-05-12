@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	await app.renderPage();
 
 	if (typeof lucide !== 'undefined') {
+		// eslint-disable-next-line no-undef
 		lucide.createIcons();
 	}
 });
