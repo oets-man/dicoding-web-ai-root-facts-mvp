@@ -20,25 +20,25 @@ module.exports = merge(common, {
 		new MiniCssExtractPlugin({
 			filename: '[name].[contenthash].css',
 		}),
-		new WorkboxWebpackPlugin.GenerateSW({
-			swDest: 'sw.js',
-			maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
-			runtimeCaching: [
-				{
-					urlPattern: /^https:\/\/api\./i,
-					handler: 'NetworkFirst',
-					options: {
-						cacheName: 'api-cache',
-						expiration: {
-							maxEntries: 50,
-							maxAgeSeconds: 60 * 60 * 24,
-						},
-						cacheableResponse: {
-							statuses: [0, 200],
-						},
-					},
-				},
-			],
-		}),
+		// new WorkboxWebpackPlugin.GenerateSW({
+		// 	swDest: 'sw.js',
+		// 	maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+		// 	runtimeCaching: [
+		// 		{
+		// 			urlPattern: /^https:\/\/api\./i,
+		// 			handler: 'NetworkFirst',
+		// 			options: {
+		// 				cacheName: 'api-cache',
+		// 				expiration: {
+		// 					maxEntries: 50,
+		// 					maxAgeSeconds: 60 * 60 * 24,
+		// 				},
+		// 				cacheableResponse: {
+		// 					statuses: [0, 200],
+		// 				},
+		// 			},
+		// 		},
+		// 	],
+		// }),
 	],
 });

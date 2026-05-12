@@ -1,4 +1,3 @@
-import { pipeline } from '@huggingface/transformers';
 import { APP_CONFIG, TRANSFORMERS_CONFIG } from '../config.js';
 import { createDelay, createModelProgressCallback, isWebGPUSupported, logError } from '../utils/index.js';
 
@@ -11,6 +10,7 @@ class GeneratorService {
 		this.currentBackend = null;
 		this.currentTone = 'normal';
 		this.onProgress = onProgress; // Callback untuk update progress
+		this.pipelineModule = null; // Cache untuk dynamic import
 	}
 
 	// TODO [Basic] ✓ Muat model dan inisialisasi pipeline text2text-generation
@@ -19,7 +19,12 @@ class GeneratorService {
 		try {
 			const device = isWebGPUSupported() ? 'webgpu' : 'wasm';
 
-			this.generator = await pipeline('text2text-generation', this.config.modelName, {
+			// Dynamic import untuk menghindari masalah __webpack_module__
+			if (!this.pipelineModule) {
+				this.pipelineModule = await import('@huggingface/transformers');
+			}
+
+			this.generator = await this.pipelineModule.pipeline('text2text-generation', this.config.modelName, {
 				dtype: 'q4',
 				device,
 				progress_callback: createModelProgressCallback(this.onProgress),
