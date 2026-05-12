@@ -225,10 +225,10 @@ export default class HomePage {
 		showElement(funFactSpinner);
 	}
 
-	showNutritionLoading() {
+	showNutritionLoading(tone) {
 		const nutriFact = document.getElementById('fun-fact-text');
 		const funFactSpinner = document.getElementById('fun-fact-spinner');
-		setElementText(nutriFact, 'Sedang menghasilkan informasi nutrisi...');
+		setElementText(nutriFact, `${tone.toUpperCase()}: Sedang menghasilkan informasi nutrisi...`);
 		showElement(funFactSpinner);
 	}
 

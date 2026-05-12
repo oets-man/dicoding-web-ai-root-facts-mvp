@@ -55,6 +55,10 @@ class GeneratorService {
 		return this;
 	}
 
+	getTone() {
+		return this.currentTone;
+	}
+
 	// TODO [Basic] ✓ Lakukan prediksi pada elemen gambar yang diberikan dan kembalikan hasilnya
 	// TODO [Basic] ✓ Tambahkan validasi untuk maksimum panjang input dan pembersihan input terhadap karakter khusus untuk mengatasi prompt injection
 	// TODO [Skilled] ✓ Konfigurasikan parameter generasi berdasarkan kebutuhan

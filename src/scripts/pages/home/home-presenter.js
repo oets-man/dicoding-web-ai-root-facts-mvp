@@ -174,7 +174,8 @@ export default class HomePresenter {
 
 	async generateNutrition(className = this.#className) {
 		if (this.#generatorService.isReady()) {
-			this.#view.showNutritionLoading();
+			const tone = this.#generatorService.getTone();
+			this.#view.showNutritionLoading(tone);
 			await createDelay(APP_CONFIG.analyzingDelay);
 
 			try {

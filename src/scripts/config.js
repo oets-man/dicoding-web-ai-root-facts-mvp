@@ -18,7 +18,7 @@ const TENSORFLOW_CONFIG = {
 
 const TRANSFORMERS_CONFIG = {
 	modelName: 'Xenova/LaMini-Flan-T5-77M',
-	maxTokens: 80,
+	maxTokens: 150,
 	temperature: 0.6,
 	topP: 0.8,
 };
