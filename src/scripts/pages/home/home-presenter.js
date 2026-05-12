@@ -139,7 +139,7 @@ export default class HomePresenter {
 			this.#stopDetectionLoop();
 			this.stopCamera();
 			this.#view.showError(
-				`Gagal mendeteksi sayuran setelah ${this.#maxLoop} kali percobaan. Pastikan objek terlihat jelas di kamera.`,
+				`Gagal mendeteksi sayuran setelah ${this.#maxLoop} kali percobaan. Pastikan objek terlihat jelas di kamera. Refresh halaman ini jika gejala ini terus berlanjut.`,
 			);
 			return;
 		}
@@ -194,7 +194,10 @@ export default class HomePresenter {
 		setTimeout(() => {
 			// paksa tampilkan loading jika masih dalam proses generating
 			if (this.#generatorService.isGeneratingContent()) {
-				this.#view.showNutritionLoading(this.#generatorService.getTone());
+				const tone = this.#generatorService.getTone();
+				this.#view.showNutritionLoading(tone);
+			} else {
+				this.#view.hideNutritionLoading();
 			}
 		}, 1000);
 	}

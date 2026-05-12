@@ -194,8 +194,7 @@ export default class HomePage {
 		setElementText(detectConfidence, `${confidence}%`);
 		setElementStyle(confidentFill, 'width', `${confidence}%`);
 
-		const funFactSpinner = document.getElementById('fun-fact-spinner');
-		hideElement(funFactSpinner);
+		this.hideNutritionLoading();
 	}
 
 	showResultsWithNullNutrition(className, confidence) {
@@ -232,11 +231,15 @@ export default class HomePage {
 		showElement(funFactSpinner);
 	}
 
+	hideNutritionLoading() {
+		const funFactSpinner = document.getElementById('fun-fact-spinner');
+		hideElement(funFactSpinner);
+	}
+
 	showNutritionSuccess(fact) {
 		const nutriFact = document.getElementById('fun-fact-text');
-		const funFactSpinner = document.getElementById('fun-fact-spinner');
 		addScaleAnimation(nutriFact, () => setElementText(nutriFact, fact));
-		hideElement(funFactSpinner);
+		this.hideNutritionLoading();
 	}
 
 	showNutritionError(err) {
