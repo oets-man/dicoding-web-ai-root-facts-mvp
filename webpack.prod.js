@@ -1,6 +1,5 @@
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 
@@ -16,7 +15,6 @@ module.exports = merge(common, {
 		],
 	},
 	plugins: [
-		new CleanWebpackPlugin(),
 		new MiniCssExtractPlugin({
 			filename: '[name].[contenthash].css',
 		}),
@@ -25,11 +23,6 @@ module.exports = merge(common, {
 			swDest: 'sw.bundle.js',
 			maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50 MB
 			runtimeCaching: [
-				{
-					urlPattern: ({ url }) => url.origin === self.location.origin,
-					handler: 'NetworkFirst',
-					options: { cacheName: 'local-api' },
-				},
 				{
 					urlPattern: ({ url }) => url.pathname.startsWith('/model/'),
 					handler: 'CacheFirst',
@@ -46,6 +39,17 @@ module.exports = merge(common, {
 					handler: 'StaleWhileRevalidate',
 					options: { cacheName: 'static-resources' },
 				},
+				{
+					urlPattern: ({ url }) => url.origin === self.location.origin,
+					handler: 'StaleWhileRevalidate', //'NetworkFirst'
+					options: { cacheName: 'local-api' },
+				},
+				{
+					// catch-all | fallback for other requests (e.g., fonts, media, etc.)
+					urlPattern: ({ url }) => true,
+					handler: 'CacheFirst', // 'staleWhileRevalidate',
+					options: { cacheName: 'other-cache' },
+				}
 			],
 		}),
 	],
